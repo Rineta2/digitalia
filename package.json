@@ -29,5 +29,9 @@
     "sass": "^1.80.6",
     "sweetalert": "^2.1.2",
     "swr": "^2.2.5"
-  }
+  },
+  "description": "Digitalia adalah platform e-commerce terdepan yang menyediakan berbagai produk digital dan layanan berkualitas tinggi. Kami berkomitmen untuk memberikan solusi digital yang inovatif dan efisien kepada pelanggan kami di seluruh dunia. Dengan fokus pada kemudahan akses dan kepuasan pelanggan, Digitalia menawarkan berbagai produk digital mulai dari perangkat lunak, e-book, musik, hingga layanan digital seperti desain grafis dan konsultasi IT.",
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC"
 }
