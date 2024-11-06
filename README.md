@@ -1,36 +1,23 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tentang Digitalia
 
-## Getting Started
+Digitalia adalah platform e-commerce terdepan yang menyediakan berbagai produk digital dan layanan berkualitas tinggi. Kami berkomitmen untuk memberikan solusi digital yang inovatif dan efisien kepada pelanggan kami di seluruh dunia. Dengan fokus pada kemudahan akses dan kepuasan pelanggan, Digitalia menawarkan berbagai produk digital mulai dari perangkat lunak, e-book, musik, hingga layanan digital seperti desain grafis dan konsultasi IT.
 
-First, run the development server:
+## Produk dan Layanan Kami
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Produk Digital**: Kami menyediakan berbagai produk digital seperti aplikasi perangkat lunak, e-book, musik, dan video yang dapat diunduh secara instan. Produk kami dirancang untuk memenuhi kebutuhan pribadi dan profesional Anda.
+- **Layanan Digital**: Digitalia juga menawarkan layanan digital yang mencakup desain grafis, pengembangan web, pemasaran digital, dan konsultasi IT. Tim ahli kami siap membantu Anda mencapai tujuan bisnis Anda dengan solusi yang disesuaikan.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Keunggulan Digitalia
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **Akses Global**: Produk dan layanan kami dapat diakses dari mana saja di dunia, memungkinkan Anda untuk mendapatkan apa yang Anda butuhkan kapan saja.
+- **Distribusi Instan**: Dengan sistem distribusi digital kami, Anda dapat mengunduh produk kami secara instan setelah pembelian, tanpa harus menunggu pengiriman fisik.
+- **Biaya Efisien**: Tanpa biaya produksi dan pengiriman fisik, kami dapat menawarkan produk dan layanan kami dengan harga yang lebih kompetitif.
+- **Pembaharuan Real-Time**: Kami secara rutin memperbarui produk dan layanan kami untuk memastikan Anda selalu mendapatkan versi terbaru dan terbaik.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Misi Kami
 
-## Learn More
+Misi kami adalah untuk memberdayakan individu dan bisnis dengan menyediakan produk dan layanan digital yang inovatif dan dapat diandalkan. Kami berkomitmen untuk terus berinovasi dan memberikan nilai tambah kepada pelanggan kami.
 
-To learn more about Next.js, take a look at the following resources:
+## Hubungi Kami
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Untuk informasi lebih lanjut tentang produk dan layanan kami, atau untuk konsultasi gratis, silakan hubungi kami melalui email di [info@digitalia.com](mailto:info@digitalia.com) atau kunjungi halaman kontak kami.

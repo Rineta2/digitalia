@@ -3,14 +3,31 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^43.3.0",
+    "@ckeditor/ckeditor5-react": "^9.3.1",
+    "@develoka/angka-rupiah-js": "^1.0.3",
+    "date-fns": "^4.1.0",
+    "firebase": "^11.0.1",
+    "gsap": "^3.12.5",
+    "js-cookie": "^3.0.5",
+    "libphonenumber-js": "^1.11.12",
+    "lucide-react": "^0.454.0",
+    "minimatch": "^10.0.1",
+    "next": "15.0.2",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
-    "next": "15.0.2"
+    "react-hot-toast": "^2.4.1",
+    "react-paginate": "^8.2.0",
+    "react-phone-number-input": "^3.4.9",
+    "react-toastify": "^10.0.6",
+    "sass": "^1.80.6",
+    "sweetalert": "^2.1.2",
+    "swr": "^2.2.5"
   }
 }
