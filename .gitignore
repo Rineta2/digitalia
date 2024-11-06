@@ -44,3 +44,16 @@ next-env.d.ts
 
 # .next
 .next
+
+# firebase
+firebase.json
+.firebaserc
+
+# out
+out/
+
+# functions
+functions/
+
+# .github
+.github/
