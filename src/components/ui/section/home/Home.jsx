@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-import { homeData, homeImg } from "@/components/data/Home";
+import { homeData, homeImg } from "@/components/ui/data/Home";
 
 import Link from "next/link";
 

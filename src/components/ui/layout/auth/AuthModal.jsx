@@ -1,8 +1,8 @@
 import React from "react";
 
-import Login from "@/components/layout/auth/Login";
+import Login from "@/components/ui/layout/auth/Login";
 
-import Register from "@/components/layout/auth/Register";
+import Register from "@/components/ui/layout/auth/Register";
 
 import { useAuth } from "@/utils/auth/context/AuthContext";
 
@@ -29,13 +29,15 @@ export default function AuthModal({ isOpen, onClose, activeTab, onTabChange }) {
         <div className="form-header">
           <button
             className={`toggle-btn ${activeTab === "login" ? "active" : ""}`}
-            onClick={() => onTabChange("login")}>
+            onClick={() => onTabChange("login")}
+          >
             Login
           </button>
 
           <button
             className={`toggle-btn ${activeTab === "register" ? "active" : ""}`}
-            onClick={() => onTabChange("register")}>
+            onClick={() => onTabChange("register")}
+          >
             Register
           </button>
         </div>

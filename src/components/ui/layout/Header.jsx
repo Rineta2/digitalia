@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 
 import Link from "next/link";
 
-import { navLink, profile } from "@/components/data/Header";
+import { navLink, profile } from "@/components/ui/data/Header";
 
 import {
   LogOut,
@@ -20,7 +20,7 @@ import "@/components/styling/Header.scss";
 
 import { useAuth } from "@/utils/auth/context/AuthContext";
 
-import AuthModal from "@/components/layout/auth/AuthModal";
+import AuthModal from "@/components/ui/layout/auth/AuthModal";
 
 import Cookies from "js-cookie";
 
