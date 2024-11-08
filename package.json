@@ -9,9 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^43.3.0",
-    "@ckeditor/ckeditor5-react": "^9.3.1",
     "@develoka/angka-rupiah-js": "^1.0.3",
+    "@tinymce/tinymce-react": "^5.1.1",
     "date-fns": "^4.1.0",
     "firebase": "^11.0.1",
     "gsap": "^3.12.5",
@@ -26,7 +25,7 @@
     "react-paginate": "^8.2.0",
     "react-phone-number-input": "^3.4.9",
     "react-toastify": "^10.0.6",
-    "sweetalert": "^2.1.2",
+    "swiper": "^11.1.14",
     "swr": "^2.2.5"
   },
   "description": "Digitalia adalah platform e-commerce terdepan yang menyediakan berbagai produk digital dan layanan berkualitas tinggi. Kami berkomitmen untuk memberikan solusi digital yang inovatif dan efisien kepada pelanggan kami di seluruh dunia. Dengan fokus pada kemudahan akses dan kepuasan pelanggan, Digitalia menawarkan berbagai produk digital mulai dari perangkat lunak, e-book, musik, hingga layanan digital seperti desain grafis dan konsultasi IT.",

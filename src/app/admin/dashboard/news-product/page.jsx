@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, getDoc } from "firebase/firestore";
 import { db, storage } from "@/utils/firebase";
 import { useAuth } from "@/utils/auth/context/AuthContext";
 import Link from "next/link";
@@ -58,27 +58,53 @@ export default function NewsProduct() {
     router.push(`/admin/dashboard/news-product/form?id=${id}`);
   };
 
-  const handleDelete = async (id, imageUrl) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) return;
-
-    setDeleteLoading(id);
-    try {
-      await deleteDoc(doc(db, "products", id));
-
-      if (imageUrl) {
-        const imageRef = ref(storage, imageUrl);
-        await deleteObject(imageRef);
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      try {
+        const docRef = doc(db, "products", id);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          const productData = docSnap.data();
+          
+          // Hapus gambar utama
+          if (productData.imageUrl) {
+            try {
+              const mainImagePath = decodeURIComponent(productData.imageUrl.split('?')[0].split('/o/')[1]);
+              const mainImageRef = ref(storage, mainImagePath);
+              await deleteObject(mainImageRef);
+            } catch (storageError) {
+              if (storageError.code !== 'storage/object-not-found') {
+                console.error("Error deleting main image:", storageError);
+              }
+            }
+          }
+          
+          // Hapus gambar tambahan
+          if (productData.additionalImageUrls && productData.additionalImageUrls.length > 0) {
+            for (const imageUrl of productData.additionalImageUrls) {
+              try {
+                const imagePath = decodeURIComponent(imageUrl.split('?')[0].split('/o/')[1]);
+                const imageRef = ref(storage, imagePath);
+                await deleteObject(imageRef);
+              } catch (storageError) {
+                if (storageError.code !== 'storage/object-not-found') {
+                  console.error("Error deleting additional image:", storageError);
+                }
+              }
+            }
+          }
+          
+          // Hapus dokumen dari Firestore
+          await deleteDoc(docRef);
+          
+          toast.success("Product deleted successfully");
+          fetchProducts();
+        }
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        toast.error("Failed to delete product");
       }
-
-      setProducts((prevProducts) =>
-        prevProducts.filter((product) => product.id !== id)
-      );
-      toast.success("Product deleted successfully");
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      toast.error("Failed to delete product");
-    } finally {
-      setDeleteLoading(null);
     }
   };
 
@@ -207,7 +233,7 @@ export default function NewsProduct() {
 
                 <td>
                   <button className="edit-button" onClick={() => handleEdit(product.id)}>Edit</button>
-                  <button className="delete-button" onClick={() => handleDelete(product.id, product.imageUrl)} disabled={deleteLoading === product.id}>
+                  <button className="delete-button" onClick={() => handleDelete(product.id)} disabled={deleteLoading === product.id}>
                     {deleteLoading === product.id ? "Deleting..." : "Delete"}
                   </button>
                 </td>
