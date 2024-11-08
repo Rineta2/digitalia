@@ -11,7 +11,9 @@ import toast from "react-hot-toast";
 
 export const fetchTags = async (setTags) => {
   try {
-    const querySnapshot = await getDocs(collection(db, "tags"));
+    const querySnapshot = await getDocs(
+      collection(db, process.env.NEXT_PUBLIC_API_TAG)
+    );
     const tagsList = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -39,11 +41,14 @@ export const addTag = async (name, category, setNewTag, setTags) => {
     }
 
     // Tambahkan tag ke Firestore
-    const docRef = await addDoc(collection(db, "tags"), {
-      name: name.trim(),
-      category: category.trim(),
-      createdAt: new Date().toISOString(),
-    });
+    const docRef = await addDoc(
+      collection(db, process.env.NEXT_PUBLIC_API_TAG),
+      {
+        name: name.trim(),
+        category: category.trim(),
+        createdAt: new Date().toISOString(),
+      }
+    );
 
     // Log success
     console.log("Tag added with ID:", docRef.id);
@@ -65,7 +70,7 @@ export const updateTag = async (id, name, category, setTags) => {
   try {
     const loadingToast = toast.loading("Updating tag...");
 
-    const tagRef = doc(db, "tags", id);
+    const tagRef = doc(db, process.env.NEXT_PUBLIC_API_TAG, id);
     await updateDoc(tagRef, {
       name: name.trim(),
       category: category.trim(),
@@ -86,7 +91,7 @@ export const deleteTag = async (id, setTags) => {
   try {
     const loadingToast = toast.loading("Deleting tag...");
 
-    await deleteDoc(doc(db, "tags", id));
+    await deleteDoc(doc(db, process.env.NEXT_PUBLIC_API_TAG, id));
     await fetchTags(setTags);
 
     toast.dismiss(loadingToast);

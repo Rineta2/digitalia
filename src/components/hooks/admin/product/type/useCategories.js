@@ -7,7 +7,10 @@ export function useCategories() {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const categoryCollection = collection(db, "categories");
+      const categoryCollection = collection(
+        db,
+        process.env.NEXT_PUBLIC_API_CATEGORY
+      );
       const categorySnapshot = await getDocs(categoryCollection);
       const categoryList = categorySnapshot.docs.map((doc) => ({
         id: doc.id,

@@ -18,7 +18,9 @@ import { db, storage } from "@/utils/firebase";
 export const fetchProducts = async (user) => {
   if (!user) throw new Error("User not authenticated");
 
-  const querySnapshot = await getDocs(collection(db, "products"));
+  const querySnapshot = await getDocs(
+    collection(db, process.env.NEXT_PUBLIC_API_PRODUCT)
+  );
   return querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
@@ -26,12 +28,14 @@ export const fetchProducts = async (user) => {
 };
 
 export const fetchCategories = async () => {
-  const querySnapshot = await getDocs(collection(db, "categories"));
+  const querySnapshot = await getDocs(
+    collection(db, process.env.NEXT_PUBLIC_API_CATEGORY)
+  );
   return querySnapshot.docs.map((doc) => doc.data().name);
 };
 
 export const deleteProduct = async (id) => {
-  const docRef = doc(db, "products", id);
+  const docRef = doc(db, process.env.NEXT_PUBLIC_API_PRODUCT, id);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -69,10 +73,10 @@ const deleteImageFromStorage = async (imageUrl) => {
 
 export const addProductRating = async (productId, userId, rating, review) => {
   try {
-    const ratingRef = collection(db, "ratings");
+    const ratingRef = collection(db, process.env.NEXT_PUBLIC_API_RATING);
 
     // Get user data
-    const userDocRef = doc(db, "users", userId);
+    const userDocRef = doc(db, process.env.NEXT_PUBLIC_API_USER, userId);
     const userDocSnap = await getDoc(userDocRef);
 
     if (!userDocSnap.exists()) {
@@ -116,7 +120,7 @@ export const addProductRating = async (productId, userId, rating, review) => {
 
 export const getProductRatings = async (productId) => {
   try {
-    const ratingRef = collection(db, "ratings");
+    const ratingRef = collection(db, process.env.NEXT_PUBLIC_API_RATING);
     const q = query(
       ratingRef,
       where("productId", "==", productId),
@@ -137,7 +141,11 @@ export const getProductRatings = async (productId) => {
       // Fetch user data if needed
       if (!ratingData.userInfo || !ratingData.userInfo.photoURL) {
         try {
-          const userDocRef = doc(db, "users", ratingData.userId);
+          const userDocRef = doc(
+            db,
+            process.env.NEXT_PUBLIC_API_USER,
+            ratingData.userId
+          );
           const userDocSnap = await getDoc(userDocRef);
 
           if (userDocSnap.exists()) {

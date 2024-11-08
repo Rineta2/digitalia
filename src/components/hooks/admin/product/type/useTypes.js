@@ -13,7 +13,7 @@ export function useTypes(selectedCategory, newType, setNewType) {
   const [types, setTypes] = useState([]);
 
   const fetchTypes = async () => {
-    const typeCollection = collection(db, "types");
+    const typeCollection = collection(db, process.env.NEXT_PUBLIC_API_TYPE);
     const typeSnapshot = await getDocs(typeCollection);
     const typeList = typeSnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -31,7 +31,7 @@ export function useTypes(selectedCategory, newType, setNewType) {
       alert("Please select a category first.");
       return;
     }
-    const typeCollection = collection(db, "types");
+    const typeCollection = collection(db, process.env.NEXT_PUBLIC_API_TYPE);
     await addDoc(typeCollection, { name: newType, category: selectedCategory });
     setNewType("");
     fetchTypes();
@@ -39,7 +39,7 @@ export function useTypes(selectedCategory, newType, setNewType) {
   };
 
   const deleteType = async (typeId) => {
-    const typeDoc = doc(db, "types", typeId);
+    const typeDoc = doc(db, process.env.NEXT_PUBLIC_API_TYPE, typeId);
     await deleteDoc(typeDoc);
     fetchTypes();
     toast.success("Type berhasil dihapus!");

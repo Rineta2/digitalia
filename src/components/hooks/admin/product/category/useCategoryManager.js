@@ -16,7 +16,10 @@ export function useCategoryManager() {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const categoryCollection = collection(db, "categories");
+      const categoryCollection = collection(
+        db,
+        process.env.NEXT_PUBLIC_API_CATEGORY
+      );
       const categorySnapshot = await getDocs(categoryCollection);
       const categoryList = categorySnapshot.docs.map((doc) => ({
         id: doc.id,
@@ -34,7 +37,10 @@ export function useCategoryManager() {
       !categories.some((category) => category.name === newCategory)
     ) {
       try {
-        const categoryCollection = collection(db, "categories");
+        const categoryCollection = collection(
+          db,
+          process.env.NEXT_PUBLIC_API_CATEGORY
+        );
         const docRef = await addDoc(categoryCollection, { name: newCategory });
         setCategories([...categories, { id: docRef.id, name: newCategory }]);
         setNewCategory("");
@@ -50,7 +56,7 @@ export function useCategoryManager() {
 
   const deleteCategory = async (id) => {
     try {
-      await deleteDoc(doc(db, "categories", id));
+      await deleteDoc(doc(db, process.env.NEXT_PUBLIC_API_CATEGORY, id));
       setCategories(categories.filter((category) => category.id !== id));
       toast.success("Category deleted successfully!");
     } catch (error) {
@@ -61,7 +67,7 @@ export function useCategoryManager() {
 
   const editCategory = async (id, newName) => {
     try {
-      const categoryDoc = doc(db, "categories", id);
+      const categoryDoc = doc(db, process.env.NEXT_PUBLIC_API_CATEGORY, id);
       await updateDoc(categoryDoc, { name: newName });
       setCategories(
         categories.map((category) =>
