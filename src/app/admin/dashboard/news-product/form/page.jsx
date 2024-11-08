@@ -77,9 +77,7 @@ export default function ProductForm() {
   useEffect(() => {
     if (formData.category) {
       fetchTypes(formData.category);
-      if (formData.category === "Website") {
-        fetchTags();
-      }
+      fetchTags(formData.category);
     }
   }, [formData.category]);
 
@@ -112,11 +110,26 @@ export default function ProductForm() {
     }
   };
 
-  const fetchTags = async () => {
+  const fetchTags = async (category) => {
     try {
       const tagsCollection = collection(db, "tags");
       const tagsSnapshot = await getDocs(tagsCollection);
-      const tagsList = tagsSnapshot.docs.map((doc) => doc.data().name);
+
+      console.log(
+        "All tags:",
+        tagsSnapshot.docs.map((doc) => doc.data())
+      );
+
+      const tagsList = tagsSnapshot.docs
+        .map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }))
+        .filter((tag) => !category || tag.category === category)
+        .map((tag) => tag.name);
+
+      console.log("Filtered tags for category:", category, tagsList);
+
       setTags(tagsList);
     } catch (error) {
       console.error("Error fetching tags:", error);
@@ -619,25 +632,23 @@ export default function ProductForm() {
             ))}
           </div>
 
-          {formData.category === "Website" && (
-            <div className="single__box">
-              <label>Tags:</label>
-              <select
-                name="tags"
-                value={formData.tags[0] || ""}
-                onChange={handleTagChange}
-              >
-                <option value="" disabled={formData.tags.length > 0}>
-                  Select a tag
+          <div className="single__box">
+            <label>Tags:</label>
+            <select
+              name="tags"
+              value={formData.tags[0] || ""}
+              onChange={handleTagChange}
+            >
+              <option value="" disabled={formData.tags.length > 0}>
+                Select a tag
+              </option>
+              {tags.map((tag, index) => (
+                <option key={`${tag}-${index}`} value={tag}>
+                  {tag}
                 </option>
-                {tags.map((tag, index) => (
-                  <option key={`${tag}-${index}`} value={tag}>
-                    {tag}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+              ))}
+            </select>
+          </div>
 
           {formData.category === "Website" && (
             <div className="single__box">

@@ -1,6 +1,6 @@
 import HomeTitle from "@/components/section/home/Home";
 
-import NewsPruduct from "@/components/section/product/page";
+import NewsPruduct from "@/components/section/product/NewsProducts";
 
 export default function page() {
   return (

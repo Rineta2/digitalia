@@ -16,7 +16,7 @@ export const navLink = [
   {
     id: 3,
     name: "Products",
-    path: "/products",
+    path: "/pages/products",
   },
 
   {

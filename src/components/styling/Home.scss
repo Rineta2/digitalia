@@ -132,6 +132,58 @@
             }
         }
 
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+
+            .category {
+                display: flex;
+                gap: 1rem;
+
+                button {
+                    padding: 1rem;
+                    border-radius: 6px;
+                    border: 1px solid $text-c;
+                    cursor: pointer;
+                    transition: all 0.3s ease-in-out;
+                    font-size: 1.3rem;
+
+                    &:hover {
+                        background-color: $primary-c;
+                        color: $background;
+                        border: 1px solid $primary-c;
+                    }
+
+                    &.active {
+                        background-color: $primary-c;
+                        color: $background;
+                    }
+                }
+            }
+
+            .tag-select {
+                display: flex;
+                gap: 1rem;
+
+                label {
+                    font-size: 1.3rem;
+                }
+
+                select {
+                    padding: 1rem;
+                    border-radius: 6px;
+                    border: 1px solid $text-c;
+                    font-size: 1.3rem;
+
+                    option {
+                        font-size: 1.3rem;
+                    }
+                }
+            }
+        }
+
         .content {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -243,6 +295,18 @@
                             color: $primary-c;
                         }
                     }
+                }
+            }
+        }
+
+        .older-products {
+            margin-top: 5rem;
+
+            .heading {
+                margin-bottom: 3rem;
+
+                h1 {
+                    font-size: 2rem;
                 }
             }
         }
@@ -524,7 +588,7 @@
                     p {
                         margin-bottom: 1.4rem;
                         color: $text-c;
-                        font-size: 1.5rem;
+                        font-size: 1.3rem;
                     }
 
                     blockquote {

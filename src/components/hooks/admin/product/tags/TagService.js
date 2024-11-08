@@ -1,58 +1,98 @@
-import { db } from "@/utils/firebase";
 import {
   collection,
   addDoc,
   getDocs,
-  updateDoc,
-  deleteDoc,
   doc,
+  deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
+import { db } from "@/utils/firebase";
 import toast from "react-hot-toast";
 
 export const fetchTags = async (setTags) => {
   try {
-    const tagsCollection = collection(db, "tags");
-    const tagsSnapshot = await getDocs(tagsCollection);
-    const tagsList = tagsSnapshot.docs.map((doc) => ({
+    const querySnapshot = await getDocs(collection(db, "tags"));
+    const tagsList = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
     setTags(tagsList);
   } catch (error) {
-    toast.error("Gagal mengambil data tag.");
+    console.error("Error fetching tags:", error);
+    toast.error("Failed to fetch tags");
   }
 };
 
-export const addTag = async (newTag, setNewTag, setTags) => {
+export const addTag = async (name, category, setNewTag, setTags) => {
   try {
-    const tagsCollection = collection(db, "tags");
-    await addDoc(tagsCollection, { name: newTag });
+    // Tambahkan loading toast
+    const loadingToast = toast.loading("Adding tag...");
+
+    // Log untuk debugging
+    console.log("Adding tag with data:", { name, category });
+
+    // Validasi input
+    if (!name || !category) {
+      toast.dismiss(loadingToast);
+      toast.error("Name and category are required");
+      return;
+    }
+
+    // Tambahkan tag ke Firestore
+    const docRef = await addDoc(collection(db, "tags"), {
+      name: name.trim(),
+      category: category.trim(),
+      createdAt: new Date().toISOString(),
+    });
+
+    // Log success
+    console.log("Tag added with ID:", docRef.id);
+
+    // Reset form dan refresh data
     setNewTag("");
-    fetchTags(setTags);
-    toast.success("Tag berhasil ditambahkan!");
+    await fetchTags(setTags);
+
+    // Success toast
+    toast.dismiss(loadingToast);
+    toast.success("Tag added successfully");
   } catch (error) {
-    toast.error("Gagal menambahkan tag.");
+    console.error("Error adding tag:", error);
+    toast.error(`Failed to add tag: ${error.message}`);
   }
 };
 
-export const updateTag = async (id, newName, setTags) => {
+export const updateTag = async (id, name, category, setTags) => {
   try {
-    const tagDoc = doc(db, "tags", id);
-    await updateDoc(tagDoc, { name: newName });
-    fetchTags(setTags);
-    toast.success("Tag berhasil diperbarui!");
+    const loadingToast = toast.loading("Updating tag...");
+
+    const tagRef = doc(db, "tags", id);
+    await updateDoc(tagRef, {
+      name: name.trim(),
+      category: category.trim(),
+      updatedAt: new Date().toISOString(),
+    });
+
+    await fetchTags(setTags);
+
+    toast.dismiss(loadingToast);
+    toast.success("Tag updated successfully");
   } catch (error) {
-    toast.error("Gagal memperbarui tag.");
+    console.error("Error updating tag:", error);
+    toast.error(`Failed to update tag: ${error.message}`);
   }
 };
 
 export const deleteTag = async (id, setTags) => {
   try {
-    const tagDoc = doc(db, "tags", id);
-    await deleteDoc(tagDoc);
-    fetchTags(setTags);
-    toast.success("Tag berhasil dihapus!");
+    const loadingToast = toast.loading("Deleting tag...");
+
+    await deleteDoc(doc(db, "tags", id));
+    await fetchTags(setTags);
+
+    toast.dismiss(loadingToast);
+    toast.success("Tag deleted successfully");
   } catch (error) {
-    toast.error("Gagal menghapus tag.");
+    console.error("Error deleting tag:", error);
+    toast.error(`Failed to delete tag: ${error.message}`);
   }
 };

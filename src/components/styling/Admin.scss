@@ -869,7 +869,7 @@
                     .model {
                         padding: 1rem;
                         width: 30%;
-                        height: 30%;
+                        height: 50%;
                         background-color: $background;
                         display: flex;
                         flex-direction: column;
@@ -883,17 +883,45 @@
                             letter-spacing: 2px;
                         }
 
-                        input {
-                            padding: 1rem 1rem;
-                            border-radius: 6px;
-                            border: 1px solid rgba(0, 0, 0, 0.2);
-                            font-size: 1.2rem;
-                            height: 50px;
-                            width: 70%;
-                            outline: none;
-                            transition: all 0.3s ease-in-out;
-                            &:focus {
-                                border: 1px solid $primary-c;
+                        .form-group {
+                            display: flex;
+                            gap: 1rem;
+                            align-items: center;
+                            flex-direction: column;
+                            width: 100%;
+                            padding: 1rem;
+
+                            label {
+                                font-size: 1.3rem;
+                                letter-spacing: 2px;
+                            }
+
+                            input {
+                                padding: 1rem 1rem;
+                                border-radius: 6px;
+                                border: 1px solid rgba(0, 0, 0, 0.2);
+                                font-size: 1.2rem;
+                                height: 50px;
+                                width: 100%;
+                                outline: none;
+                                transition: all 0.3s ease-in-out;
+                                &:focus {
+                                    border: 1px solid $primary-c;
+                                }
+                            }
+
+                            select {
+                                padding: 1rem 1rem;
+                                border-radius: 6px;
+                                border: 1px solid rgba(0, 0, 0, 0.2);
+                                font-size: 1.2rem;
+                                height: 50px;
+                                width: 100%;
+                                outline: none;
+                                transition: all 0.3s ease-in-out;
+                                &:focus {
+                                    border: 1px solid $primary-c;
+                                }
                             }
                         }
 

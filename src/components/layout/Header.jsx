@@ -6,7 +6,13 @@ import Link from "next/link";
 
 import { navLink, profile } from "@/components/data/Header";
 
-import { LogOut, LogIn, ShoppingCart, User } from "lucide-react";
+import {
+  LogOut,
+  LogIn,
+  ShoppingCart,
+  User,
+  LayoutDashboard,
+} from "lucide-react";
 
 import Image from "next/image";
 
@@ -16,7 +22,7 @@ import { useAuth } from "@/utils/auth/context/AuthContext";
 
 import AuthModal from "@/components/layout/auth/AuthModal";
 
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 export default function Header() {
   const { user, login, logout } = useAuth();
@@ -26,7 +32,7 @@ export default function Header() {
   const [fixed, setFixed] = useState(false);
 
   useEffect(() => {
-    const authToken = Cookies.get('authToken');
+    const authToken = Cookies.get("authToken");
     if (authToken && !user) {
     }
   }, [user]);
@@ -52,7 +58,8 @@ export default function Header() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-        }}>
+        }}
+      >
         {profile.map((item) => {
           return (
             <Link key={item.id} href={item.path} className="nav__logo">
@@ -69,7 +76,8 @@ export default function Header() {
 
         <ul
           className="nav__list"
-          style={{ display: "flex", alignItems: "center", gap: "5rem" }}>
+          style={{ display: "flex", alignItems: "center", gap: "5rem" }}
+        >
           {navLink.map((item) => {
             return (
               <li key={item.id} className="nav__item">
@@ -83,9 +91,10 @@ export default function Header() {
 
         <div
           className="nav__actions"
-          style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+          style={{ display: "flex", gap: "2rem", alignItems: "center" }}
+        >
           <div className="cart">
-            <ShoppingCart size={24} />
+            <ShoppingCart size={28} />
           </div>
 
           {user ? (
@@ -98,15 +107,15 @@ export default function Header() {
                   alignItems: "center",
                   gap: "0.5rem",
                   cursor: "pointer",
-                }}>
+                }}
+              >
                 {user.photoURL ? (
                   <Image
                     src={user.photoURL}
                     alt="Profile"
-                    width={32}
-                    height={32}
+                    width={500}
+                    height={500}
                     className="profile-image"
-                    style={{ borderRadius: "50%" }}
                   />
                 ) : (
                   <User size={24} />
@@ -114,61 +123,29 @@ export default function Header() {
               </div>
 
               {showProfileMenu && (
-                <div
-                  className="profile-menu"
-                  style={{
-                    position: "absolute",
-                    top: "100%",
-                    right: 0,
-                    backgroundColor: "white",
-                    padding: "1rem",
-                    boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
-                    borderRadius: "8px",
-                    marginTop: "0.5rem",
-                    minWidth: "200px",
-                    zIndex: 100,
-                  }}>
+                <div className="profile-menu">
                   <div
                     className="profile-info"
                     style={{
                       borderBottom: "1px solid #eee",
                       paddingBottom: "0.5rem",
                       marginBottom: "0.5rem",
-                    }}>
-                    <p style={{ fontWeight: "bold" }}>
-                      {user.displayName || user.email}
-                    </p>
+                    }}
+                  >
+                    <h1>{user.displayName || user.email}</h1>
                   </div>
 
                   <Link
-                    href={user.isAdmin ? "/admin/dashboard" : "/users/dashboard"}
-                    style={{
-                      display: "block",
-                      padding: "0.5rem",
-                      color: "#333",
-                      textDecoration: "none",
-                      borderRadius: "4px",
-                      marginBottom: "0.5rem",
-                      transition: "background-color 0.2s",
-                    }}
+                    href={
+                      user.isAdmin ? "/admin/dashboard" : "/users/dashboard"
+                    }
                     className="dashboard-link"
-                    onClick={() => setShowProfileMenu(false)}>
-                    Dashboard
+                    onClick={() => setShowProfileMenu(false)}
+                  >
+                    <LayoutDashboard size={24} /> Dashboard
                   </Link>
 
-                  <button
-                    onClick={handleLogout}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                      padding: "0.5rem",
-                      cursor: "pointer",
-                      border: "none",
-                      backgroundColor: "transparent",
-                      width: "100%",
-                      textAlign: "left",
-                    }}>
+                  <button onClick={handleLogout}>
                     <LogOut size={16} />
                     <span>Logout</span>
                   </button>
@@ -179,7 +156,8 @@ export default function Header() {
             <div
               className="login"
               onClick={() => setIsModalOpen(true)}
-              style={{ cursor: "pointer" }}>
+              style={{ cursor: "pointer" }}
+            >
               <LogIn size={24} />
             </div>
           )}
