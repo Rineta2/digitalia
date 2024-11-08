@@ -782,10 +782,12 @@
             .side {
                 display: flex;
                 gap: 2rem;
+                min-height: 80vh;
+
                 .image {
                     display: flex;
                     flex-direction: column;
-                    width: 50%;
+                    width: 60%;
 
                     .top {
                         width: 100%;
@@ -856,14 +858,242 @@
                     display: flex;
                     flex-direction: column;
                     width: 50%;
-                    top: 0;
-                    right: 0;
+                    top: 120px;
+                    height: fit-content;
+                    padding: 1rem 2%;
+                    gap: 1rem;
 
                     h1 {
-                        font-size: 2.5rem;
+                        font-size: 3rem;
                         color: $text-c;
-                        margin-bottom: 1.5rem;
                         line-height: 1.5;
+                    }
+
+                    .rating {
+                        display: flex;
+                        align-items: center;
+                        gap: 1.5rem;
+                        padding: 0.75rem 0;
+                        border-bottom: 1px solid #e0e0e0;
+
+                        .stars {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                            padding: 0.5rem;
+                            background-color: hsla(0, 0%, 0%, 0.1);
+                            border-radius: 6px;
+                            display: flex;
+                            align-items: center;
+                        }
+
+                        .score {
+                            font-size: 1.5rem;
+                            font-weight: 600;
+                            color: #2d3436;
+                        }
+
+                        .review-count,
+                        .view-count {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                            color: $text-c;
+                            font-size: 1.3rem;
+
+                            &:first-child {
+                                font-weight: 600;
+                                color: #2d3436;
+                            }
+                        }
+                    }
+
+                    .stock,
+                    .price {
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+                        padding: 1rem 0;
+                        border-bottom: 1px solid #e0e0e0;
+
+                        label {
+                            color: $text-c;
+                            font-size: 1.5rem;
+                            min-width: 80px;
+                            letter-spacing: 2px;
+                        }
+
+                        span {
+                            font-size: 1.5rem;
+                            font-weight: 600;
+                            color: #2d3436;
+                        }
+                    }
+
+                    .price {
+                        span {
+                            color: $primary-c;
+                        }
+                    }
+
+                    .types {
+                        margin-top: 2rem;
+
+                        label {
+                            display: block;
+                            color: $text-c;
+                            margin-bottom: 2rem;
+                            font-size: 1.5rem;
+                        }
+
+                        .type-buttons {
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 1rem;
+
+                            .type-button {
+                                padding: 1rem 2rem;
+                                border: 2px solid #e0e0e0;
+                                border-radius: 8px;
+                                background: transparent;
+                                color: #2d3436;
+                                font-weight: 500;
+                                font-size: 1.5rem;
+                                cursor: pointer;
+                                transition: all 0.2s ease;
+
+                                &:hover {
+                                    border-color: $primary-c;
+                                    color: $primary-c;
+                                }
+
+                                &.active {
+                                    background: $primary-c;
+                                    border-color: $primary-c;
+                                    color: white;
+                                }
+                            }
+                        }
+                    }
+
+                    .component {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 1rem;
+                        row-gap: 2rem;
+                        margin-top: 3rem;
+
+                        .box {
+                            display: flex;
+                            align-items: center;
+                            gap: 1.5rem;
+                            padding: 1rem;
+                            border-radius: 6px;
+                            border: 1px solid #e0e0e0;
+                            transition: all 0.3s ease-in-out;
+
+                            &:hover {
+                                background-color: $primary-c;
+                                color: $background;
+                                transform: translateY(-5px);
+                                span {
+                                    color: $background;
+                                }
+                            }
+
+                            svg {
+                                width: 30px;
+                                height: 30px;
+                            }
+
+                            span {
+                                font-size: 1.2rem;
+                                color: $text-c;
+                                transition: all 0.3s ease-in-out;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .description {
+                width: 100%;
+                padding: 2rem;
+                margin-top: 2rem;
+                max-width: 1500px;
+
+                .product-content {
+                    line-height: 1.6;
+                    color: $text-c;
+                    max-width: 100%;
+                    overflow-x: hidden;
+
+                    h1,
+                    h2,
+                    h3,
+                    h4,
+                    h5,
+                    h6 {
+                        margin: 1.5rem 0 1rem;
+                        font-weight: 600;
+                        color: $text-c;
+                    }
+
+                    h1 {
+                        font-size: 3rem;
+                    }
+
+                    h2 {
+                        font-size: 2rem;
+                    }
+
+                    h3 {
+                        font-size: 1.5rem;
+                    }
+
+                    h4 {
+                        font-size: 1.25rem;
+                    }
+
+                    p {
+                        margin-bottom: 1rem;
+                        font-size: 1.2rem;
+                        line-height: 2;
+                    }
+
+                    ul,
+                    ol {
+                        margin: 1.25rem 0;
+                        padding-left: 1.5rem;
+                    }
+
+                    li {
+                        margin-bottom: 0.5rem;
+                    }
+
+                    blockquote {
+                        margin: 1.5rem 0;
+                        padding: 1rem 1.5rem;
+                        border-left: 4px solid $primary-c;
+                        background-color: #f9fafb;
+                        font-style: italic;
+                    }
+
+                    @media (max-width: 768px) {
+                        padding: 1rem;
+
+                        h1 {
+                            font-size: 1.75rem;
+                        }
+                        h2 {
+                            font-size: 1.5rem;
+                        }
+                        h3 {
+                            font-size: 1.25rem;
+                        }
+                        h4 {
+                            font-size: 1.125rem;
+                        }
                     }
                 }
             }

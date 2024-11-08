@@ -15,7 +15,7 @@ export default function ImageWithOriginalSize({ src, alt, quality, loading }) {
   return (
     <Image
       src={src}
-      alt={alt}
+      alt={"image"}
       width={dimensions.width}
       height={dimensions.height}
       quality={quality}
