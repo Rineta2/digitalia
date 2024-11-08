@@ -23,20 +23,27 @@ export default function RatingForm({ productId, onSuccess }) {
       return;
     }
 
+    if (rating === 0) {
+      toast.warning("Silakan pilih rating terlebih dahulu");
+      return;
+    }
+
     try {
       setLoading(true);
       await addProductRating(productId, user.uid, rating, review);
+      toast.success("Rating berhasil ditambahkan");
       setRating(0);
       setReview("");
-      toast.success("Rating berhasil ditambahkan");
       if (onSuccess) {
         await onSuccess();
       }
     } catch (error) {
       console.error("Detail error:", error);
-      toast.error(
-        error.message || "Gagal menambahkan rating. Silakan coba lagi"
-      );
+      if (error.message === "Anda sudah memberikan rating untuk produk ini") {
+        toast.info("Anda sudah memberikan rating untuk produk ini sebelumnya");
+      } else {
+        toast.error("Gagal menambahkan rating. Silakan coba lagi");
+      }
     } finally {
       setLoading(false);
     }
@@ -63,6 +70,7 @@ export default function RatingForm({ productId, onSuccess }) {
           onChange={(e) => setReview(e.target.value)}
           placeholder="Tulis review Anda..."
           className="review-input"
+          required
         />
 
         <button

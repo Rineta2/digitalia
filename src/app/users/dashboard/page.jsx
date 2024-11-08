@@ -7,6 +7,7 @@ export default function page() {
     <section>
       <h1>Dashboard User</h1>
       <Link href="/users/dashboard/seting">Setting</Link>
+      <Link href="/users/dashboard/rating">Rating</Link>
     </section>
   );
 }

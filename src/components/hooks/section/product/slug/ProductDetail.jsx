@@ -49,14 +49,18 @@ export default function ProductDetail({ slug }) {
       if (!userIp) return;
 
       try {
-        const productsRef = collection(db, "products");
-        const q = query(productsRef, where("slug", "==", slug));
-        const querySnapshot = await getDocs(q);
+        const productsCollection = collection(db, "products");
+        const productQuery = query(
+          productsCollection,
+          where("slug", "==", slug)
+        );
+        const querySnapshot = await getDocs(productQuery);
 
         if (!querySnapshot.empty) {
+          const productDoc = querySnapshot.docs[0];
           const productData = {
-            id: querySnapshot.docs[0].id,
-            ...querySnapshot.docs[0].data(),
+            id: productDoc.id,
+            ...productDoc.data(),
           };
           setProduct(productData);
           setSelectedPrice(productData.price);
@@ -79,7 +83,7 @@ export default function ProductDetail({ slug }) {
     };
 
     fetchProduct();
-  }, [slug, userIp, user]);
+  }, [slug, userIp]);
 
   useEffect(() => {
     const updateViewCount = async () => {
@@ -90,29 +94,27 @@ export default function ProductDetail({ slug }) {
         : `${product.id}_${userIp}`;
 
       try {
-        const viewsRef = doc(db, "product_views", viewId);
-        const viewDoc = await getDoc(viewsRef);
+        const viewsCollection = collection(db, "product_views");
+        const viewDocRef = doc(db, "product_views", viewId);
+        const viewDocSnap = await getDoc(viewDocRef);
 
-        if (!viewDoc.exists()) {
-          await setDoc(viewsRef, {
+        if (!viewDocSnap.exists()) {
+          await setDoc(viewDocRef, {
             productId: product.id,
             ip: userIp,
             timestamp: serverTimestamp(),
             userId: user?.uid || null,
           });
-          console.log("View recorded successfully");
         }
 
-        const viewsSnapshot = await getDocs(
-          query(
-            collection(db, "product_views"),
-            where("productId", "==", product.id)
-          )
+        const viewsQuery = query(
+          viewsCollection,
+          where("productId", "==", product.id)
         );
+        const viewsSnapshot = await getDocs(viewsQuery);
         setViewCount(viewsSnapshot.size);
-        console.log("Total views:", viewsSnapshot.size);
-      } catch (viewError) {
-        console.error("Error handling view:", viewError);
+      } catch (error) {
+        console.error("Error handling view:", error);
       }
     };
 
@@ -130,6 +132,19 @@ export default function ProductDetail({ slug }) {
 
   const formatPrice = (price) => {
     return price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  const handleRatingSuccess = async () => {
+    if (product) {
+      const productRatings = await getProductRatings(product.id);
+      setRatings(productRatings);
+      if (productRatings.length > 0) {
+        const average =
+          productRatings.reduce((acc, curr) => acc + curr.rating, 0) /
+          productRatings.length;
+        setAverageRating(average);
+      }
+    }
   };
 
   if (loading) return <div>Loading...</div>;
@@ -250,7 +265,44 @@ export default function ProductDetail({ slug }) {
         <div className="ulasan-list">
           {ratings.map((rating, index) => (
             <div key={`rating-${index}`} className="ulasan-item">
-              <span>{rating.rating}</span>
+              <div className="user-info">
+                <div className="user-profile">
+                  <img
+                    src={rating.userInfo?.photoURL || "/default-avatar.png"}
+                    alt={`${rating.userInfo?.firstName || "User"}'s profile`}
+                    className="profile-image"
+                  />
+                  <span className="user-name">
+                    {rating.userInfo?.firstName || ""}{" "}
+                    {rating.userInfo?.lastName || ""}
+                  </span>
+                </div>
+                <div className="rating-stars">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span
+                      key={star}
+                      className={`star ${
+                        star <= rating.rating ? "filled" : ""
+                      }`}
+                      style={{
+                        color: star <= rating.rating ? "#FFD700" : "#ddd",
+                      }}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <p className="review-text">{rating.review}</p>
+              <span className="rating-date">
+                {rating.createdAt instanceof Date
+                  ? rating.createdAt.toLocaleDateString("id-ID", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  : "Tanggal tidak tersedia"}
+              </span>
             </div>
           ))}
         </div>

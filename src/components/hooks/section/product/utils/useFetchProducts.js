@@ -10,7 +10,9 @@ export const useFetchProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "products"));
+        const querySnapshot = await getDocs(
+          collection(db, process.env.NEXT_PUBLIC_API_PRODUCT)
+        );
         const productsData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),

@@ -81,14 +81,14 @@ export const navbar = [
     submenu: [
       {
         id: 1,
-        name: "Transaction",
-        path: "/admin/dashboard/transaction",
+        name: "Order",
+        path: "/admin/dashboard/transaction/order",
       },
 
       {
         id: 2,
-        name: "Transaction Status",
-        path: "/admin/dashboard/transaction/status",
+        name: "Rating",
+        path: "/admin/dashboard/transaction/rating",
       },
 
       {

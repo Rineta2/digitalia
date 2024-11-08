@@ -2,13 +2,17 @@ import {
   collection,
   getDocs,
   deleteDoc,
-  doc,
   getDoc,
   addDoc,
-  updateDoc,
   serverTimestamp,
+  query,
+  where,
+  orderBy,
+  doc,
 } from "firebase/firestore";
+
 import { deleteObject, ref } from "firebase/storage";
+
 import { db, storage } from "@/utils/firebase";
 
 export const fetchProducts = async (user) => {
@@ -65,28 +69,103 @@ const deleteImageFromStorage = async (imageUrl) => {
 
 export const addProductRating = async (productId, userId, rating, review) => {
   try {
-    const ratingRef = collection(db, "products", productId, "ratings");
-    await addDoc(ratingRef, {
-      userId: userId,
-      rating: rating,
-      review: review,
+    const ratingRef = collection(db, "ratings");
+
+    // Get user data
+    const userDocRef = doc(db, "users", userId);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (!userDocSnap.exists()) {
+      throw new Error("User data not found");
+    }
+
+    const userData = userDocSnap.data();
+
+    // Check existing rating
+    const existingRatingQuery = query(
+      ratingRef,
+      where("productId", "==", productId),
+      where("userId", "==", userId)
+    );
+    const existingRatingDocs = await getDocs(existingRatingQuery);
+
+    if (!existingRatingDocs.empty) {
+      throw new Error("Anda sudah memberikan rating untuk produk ini");
+    }
+
+    // Add new rating with user data
+    const ratingData = {
+      productId,
+      userId,
+      rating,
+      review,
       createdAt: serverTimestamp(),
-    });
+      userInfo: {
+        firstName: userData.firstName || "",
+        lastName: userData.lastName || "",
+        photoURL: userData.photoURL || null,
+      },
+    };
+
+    await addDoc(ratingRef, ratingData);
   } catch (error) {
+    console.error("Error adding rating:", error);
     throw error;
   }
 };
 
 export const getProductRatings = async (productId) => {
   try {
-    const ratingRef = collection(db, "products", productId, "ratings");
-    const querySnapshot = await getDocs(ratingRef);
-    return querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt?.toDate(),
-      rating: Number(doc.data().rating),
-    }));
+    const ratingRef = collection(db, "ratings");
+    const q = query(
+      ratingRef,
+      where("productId", "==", productId),
+      orderBy("createdAt", "desc")
+    );
+
+    const querySnapshot = await getDocs(q);
+    const ratings = [];
+
+    for (const docSnapshot of querySnapshot.docs) {
+      const ratingData = docSnapshot.data();
+
+      // Handle the date conversion safely
+      const createdAt = ratingData.createdAt
+        ? new Date(ratingData.createdAt.seconds * 1000)
+        : new Date();
+
+      // Fetch user data if needed
+      if (!ratingData.userInfo || !ratingData.userInfo.photoURL) {
+        try {
+          const userDocRef = doc(db, "users", ratingData.userId);
+          const userDocSnap = await getDoc(userDocRef);
+
+          if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+            ratingData.userInfo = {
+              firstName: userData?.firstName || "",
+              lastName: userData?.lastName || "",
+              photoURL: userData?.photoURL || null,
+            };
+          }
+        } catch (userError) {
+          console.error("Error fetching user data:", userError);
+          ratingData.userInfo = {
+            firstName: "",
+            lastName: "",
+            photoURL: null,
+          };
+        }
+      }
+
+      ratings.push({
+        id: docSnapshot.id,
+        ...ratingData,
+        createdAt, // Use the converted date
+      });
+    }
+
+    return ratings;
   } catch (error) {
     console.error("Error getting ratings:", error);
     throw error;

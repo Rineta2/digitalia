@@ -250,12 +250,10 @@ export default function ProductModal({
                 ))}
               </div>
 
-              {/* <RatingForm
+              <RatingForm
                 productId={selectedProduct.id}
-                onSuccess={() => {
-                  getProductRatings(selectedProduct.id).then(setRatings);
-                }}
-              /> */}
+                onSuccess={fetchRatings}
+              />
             </div>
           </div>
         </div>
