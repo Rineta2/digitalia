@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 
 import { Fragment, useEffect } from "react";
 
-import Navbar from "@/components/layout/admin/Navbar";
+import Navbar from "@/components/ui/layout/admin/Navbar";
 
-import Header from "@/components/layout/admin/Header";
+import Header from "@/components/ui/layout/admin/Header";
 
 import "@/components/styling/Admin.scss";
 
@@ -37,9 +37,7 @@ export default function AdminLayout({ children }) {
           <Navbar />
         </div>
 
-        <div className="aside">
-          {children}
-        </div>
+        <div className="aside">{children}</div>
       </div>
     </Fragment>
   );

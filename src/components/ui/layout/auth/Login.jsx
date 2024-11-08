@@ -81,24 +81,33 @@ export default function Login({ onClose }) {
         formData.password
       );
 
+      const userDoc = await getDoc(doc(db, "users", userCredential.user.uid));
+
+      if (!userDoc.exists()) {
+        toast.error("Akun tidak ditemukan");
+        await signOut(auth);
+        return;
+      }
+
+      const userData = userDoc.data();
+
+      if (userData.suspended) {
+        await signOut(auth);
+        toast.error(
+          "Akun Anda telah disuspend. Silakan hubungi admin untuk informasi lebih lanjut."
+        );
+        return;
+      }
+
       if (!userCredential.user.emailVerified) {
         await sendEmailVerification(userCredential.user);
-        setError(
+        toast.error(
           "Silakan verifikasi email Anda terlebih dahulu. Email verifikasi baru telah dikirim."
         );
         await signOut(auth);
         return;
       }
 
-      const userDoc = await getDoc(doc(db, "users", userCredential.user.uid));
-
-      if (!userDoc.exists()) {
-        setError("Akun tidak ditemukan");
-        await signOut(auth);
-        return;
-      }
-
-      const userData = userDoc.data();
       const welcomeMessage =
         userData.role === "admin"
           ? `Selamat Datang Kembali, Admin ${userData.firstName}!`
@@ -122,7 +131,9 @@ export default function Login({ onClose }) {
           toast.error("Format email tidak valid");
           break;
         case "auth/too-many-requests":
-          toast.error("Terlalu banyak percobaan login. Silakan coba lagi nanti");
+          toast.error(
+            "Terlalu banyak percobaan login. Silakan coba lagi nanti"
+          );
           break;
         default:
           toast.error("Gagal login. Silakan coba lagi");
@@ -171,7 +182,8 @@ export default function Login({ onClose }) {
               color: "#008000",
               fontWeight: "bold",
               textAlign: "center",
-            }}>
+            }}
+          >
             {resetMessage}
           </p>
         )}
@@ -198,7 +210,8 @@ export default function Login({ onClose }) {
               setShowForgotPassword(false);
               setResetMessage("");
             }}
-            style={{ marginTop: "1rem" }}>
+            style={{ marginTop: "1rem" }}
+          >
             Kembali ke Login
           </button>
         </form>

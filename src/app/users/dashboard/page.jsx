@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+
+import Link from "next/link";
 
 export default function page() {
   return (
-    <div>
+    <section>
       <h1>Dashboard User</h1>
-    </div>
-  )
+      <Link href="/users/dashboard/seting">Setting</Link>
+    </section>
+  );
 }

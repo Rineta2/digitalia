@@ -1,6 +1,9 @@
 import Image from "next/image";
+
 import Link from "next/link";
+
 import { Eye, Link as LucideLink } from "lucide-react";
+
 import {
   formatTimeAgo,
   formatNumber,

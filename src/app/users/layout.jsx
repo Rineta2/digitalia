@@ -23,7 +23,6 @@ export default function UserLayout({ children }) {
 
   return (
     <div className="user-layout">
-      {/* Add user navigation here */}
       <main>{children}</main>
     </div>
   );

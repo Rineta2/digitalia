@@ -15,6 +15,11 @@ import "swiper/css/navigation";
 import "swiper/css/free-mode";
 import "swiper/css/thumbs";
 
+import { useState, useEffect } from "react";
+import RatingForm from "@/components/ui/Rating/RatingForm";
+
+import { getProductRatings } from "@/components/hooks/admin/product/NewsProduct/utils/productServices";
+
 export default function ProductModal({
   selectedProduct,
   onClose,
@@ -25,6 +30,53 @@ export default function ProductModal({
   setThumbsSwiper,
   filteredTags,
 }) {
+  const [ratings, setRatings] = useState([]);
+  const [averageRating, setAverageRating] = useState(0);
+
+  const fetchRatings = async () => {
+    try {
+      if (selectedProduct) {
+        const productRatings = await getProductRatings(selectedProduct.id);
+        setRatings(productRatings);
+
+        // Hitung rata-rata rating
+        if (productRatings.length > 0) {
+          const average =
+            productRatings.reduce((acc, curr) => acc + curr.rating, 0) /
+            productRatings.length;
+          setAverageRating(average);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching ratings:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRatings();
+  }, [selectedProduct]);
+
+  const formatDate = (timestamp) => {
+    if (!timestamp) return "";
+
+    // Jika timestamp adalah objek Timestamp Firebase
+    if (timestamp?.toDate) {
+      return timestamp.toDate().toLocaleDateString();
+    }
+
+    // Jika timestamp adalah objek Date
+    if (timestamp instanceof Date) {
+      return timestamp.toLocaleDateString();
+    }
+
+    // Jika timestamp adalah number atau string
+    if (timestamp) {
+      return new Date(timestamp).toLocaleDateString();
+    }
+
+    return "";
+  };
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -147,6 +199,63 @@ export default function ProductModal({
                   ))}
                 </div>
               </div>
+            </div>
+
+            <div className="rating-section">
+              <h3 className="rating-title">Rating Produk</h3>
+
+              <div className="average-rating">
+                <span className="rating-value">{averageRating.toFixed(1)}</span>
+                <div className="stars">
+                  {[1, 2, 3, 4, 5].map((value) => (
+                    <span
+                      key={value}
+                      className={`star ${
+                        value <= averageRating ? "active" : ""
+                      }`}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+                <span className="total-ratings">
+                  ({ratings.length || 0} ulasan)
+                </span>
+              </div>
+
+              <div className="ratings-list">
+                {ratings.map((rating) => (
+                  <div key={rating.id} className="rating-item">
+                    <div className="rating-header">
+                      <div className="stars">
+                        {[1, 2, 3, 4, 5].map((value) => (
+                          <span
+                            key={value}
+                            className={`star ${
+                              value <= rating.rating ? "active" : ""
+                            }`}
+                          >
+                            ★
+                          </span>
+                        ))}
+                      </div>
+                      <span className="rating-date">
+                        {formatDate(rating.createdAt)}
+                      </span>
+                    </div>
+                    {rating.review && (
+                      <p className="rating-review">{rating.review}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* <RatingForm
+                productId={selectedProduct.id}
+                onSuccess={() => {
+                  getProductRatings(selectedProduct.id).then(setRatings);
+                }}
+              /> */}
             </div>
           </div>
         </div>
