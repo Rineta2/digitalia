@@ -17,6 +17,7 @@
     "js-cookie": "^3.0.5",
     "libphonenumber-js": "^1.11.12",
     "lucide-react": "^0.454.0",
+    "midtrans-client": "^1.4.2",
     "minimatch": "^10.0.1",
     "next": "15.0.2",
     "react": "^18.3.1",

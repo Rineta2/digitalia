@@ -120,62 +120,25 @@ export const addProductRating = async (productId, userId, rating, review) => {
 
 export const getProductRatings = async (productId) => {
   try {
-    const ratingRef = collection(db, process.env.NEXT_PUBLIC_API_RATING);
-    const q = query(
-      ratingRef,
-      where("productId", "==", productId),
-      orderBy("createdAt", "desc")
+    const ratingsCollection = collection(
+      db,
+      process.env.NEXT_PUBLIC_API_RATING
     );
+    const q = query(ratingsCollection, where("productId", "==", productId));
 
     const querySnapshot = await getDocs(q);
     const ratings = [];
 
-    for (const docSnapshot of querySnapshot.docs) {
-      const ratingData = docSnapshot.data();
-
-      // Handle the date conversion safely
-      const createdAt = ratingData.createdAt
-        ? new Date(ratingData.createdAt.seconds * 1000)
-        : new Date();
-
-      // Fetch user data if needed
-      if (!ratingData.userInfo || !ratingData.userInfo.photoURL) {
-        try {
-          const userDocRef = doc(
-            db,
-            process.env.NEXT_PUBLIC_API_USER,
-            ratingData.userId
-          );
-          const userDocSnap = await getDoc(userDocRef);
-
-          if (userDocSnap.exists()) {
-            const userData = userDocSnap.data();
-            ratingData.userInfo = {
-              firstName: userData?.firstName || "",
-              lastName: userData?.lastName || "",
-              photoURL: userData?.photoURL || null,
-            };
-          }
-        } catch (userError) {
-          console.error("Error fetching user data:", userError);
-          ratingData.userInfo = {
-            firstName: "",
-            lastName: "",
-            photoURL: null,
-          };
-        }
-      }
-
+    querySnapshot.forEach((doc) => {
       ratings.push({
-        id: docSnapshot.id,
-        ...ratingData,
-        createdAt, // Use the converted date
+        id: doc.id,
+        ...doc.data(),
       });
-    }
+    });
 
     return ratings;
   } catch (error) {
     console.error("Error getting ratings:", error);
-    throw error;
+    return [];
   }
 };

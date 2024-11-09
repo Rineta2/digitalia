@@ -35,7 +35,7 @@ export default function RatingPage() {
           const userId = userSnapshot.docs[0].id;
 
           const ratingsQuery = query(
-            collection(db, process.env.NEXT_PUBLIC_API_RATING),
+            collection(db, "ratings"),
             where("userId", "==", userId)
           );
 
@@ -113,7 +113,7 @@ export default function RatingPage() {
         return;
       }
 
-      await updateDoc(doc(db, process.env.NEXT_PUBLIC_API_RATING, ratingId), {
+      await updateDoc(doc(db, "ratings", ratingId), {
         review: editedReview,
         rating: Number(editedRating),
         updatedAt: new Date().toISOString(),
