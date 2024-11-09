@@ -55,9 +55,16 @@ export function useProduct(slug) {
             id: productDoc.id,
             ...productDoc.data(),
           };
-          setProduct(productData);
+
+          const productTypes = Object.keys(productData.prices || {});
+          const enrichedProductData = {
+            ...productData,
+            types: productTypes,
+          };
+
+          setProduct(enrichedProductData);
           setSelectedPrice(productData.price);
-          setTypes(Object.keys(productData.prices || {}));
+          setTypes(productTypes);
 
           const productRatings = await getProductRatings(productData.id);
           setRatings(productRatings);
@@ -115,7 +122,7 @@ export function useProduct(slug) {
   }, [product, userIp, user]);
 
   const handleTypeChange = (type) => {
-    if (!type) {
+    if (!type || type === "Default") {
       setSelectedPrice(product.price);
     } else {
       const prices = product.prices?.[type] || null;
@@ -131,10 +138,18 @@ export function useProduct(slug) {
     if (!selectedPrice || selectedPrice === product?.price) {
       return "Default";
     }
-    return (
-      types.find((type) => product?.prices?.[type] === selectedPrice) ||
-      "Default"
+    const currentType = types.find(
+      (type) => product?.prices?.[type] === selectedPrice
     );
+    return currentType || "Default";
+  };
+
+  const isTypeSelected = () => {
+    if (!types.length) return true;
+    if (selectedPrice !== product?.price) {
+      return types.some((type) => product?.prices?.[type] === selectedPrice);
+    }
+    return false;
   };
 
   return {
@@ -148,5 +163,6 @@ export function useProduct(slug) {
     handleTypeChange,
     formatPrice,
     getCurrentType,
+    isTypeSelected,
   };
 }

@@ -81,8 +81,8 @@ export const navbar = [
     submenu: [
       {
         id: 1,
-        name: "Order",
-        path: "/admin/dashboard/transaction/order",
+        name: "Transaksi",
+        path: "/admin/dashboard/transaction/transaksi",
       },
 
       {

@@ -24,13 +24,15 @@ export function usePayment(product, selectedPrice) {
 
   const handleAddToCart = async () => {
     if (!user) {
-      toast.error("Please login to add items to cart");
+      toast.error(
+        "Harap login terlebih dahulu untuk menambahkan item ke keranjang"
+      );
       setShowLoginPopup(true);
       return;
     }
 
     if (user.isAdmin) {
-      toast.error("Admin cannot add items to cart");
+      toast.error("Admin tidak dapat menambahkan item ke keranjang");
       return;
     }
 
@@ -40,13 +42,19 @@ export function usePayment(product, selectedPrice) {
       (type) => product.prices?.[type] === selectedPrice
     );
 
-    if (product.types?.length > 0 && !currentType) {
-      toast.error("Please select a type before adding to cart");
+    if (
+      product.types?.length > 0 &&
+      !currentType &&
+      selectedPrice === product.price
+    ) {
+      toast.error(
+        "Harap pilih tipe terlebih dahulu untuk menambahkan ke keranjang"
+      );
       return;
     }
 
     if (!product.stock || product.stock <= 0) {
-      toast.error("Product is out of stock!");
+      toast.error("Produk habis!");
       return;
     }
 
@@ -80,9 +88,9 @@ export function usePayment(product, selectedPrice) {
         createdAt: serverTimestamp(),
       });
 
-      toast.success("Product added to cart successfully!");
+      toast.success("Produk berhasil ditambahkan ke keranjang!");
     } catch (error) {
-      toast.error("Failed to add product to cart");
+      toast.error("Gagal menambahkan produk ke keranjang");
     } finally {
       setIsAddingToCart(false);
     }
@@ -90,13 +98,26 @@ export function usePayment(product, selectedPrice) {
 
   const handleBuyNow = () => {
     if (!user) {
-      toast.error("Please login to purchase");
+      toast.error("Harap login terlebih dahulu untuk membeli");
       setShowLoginPopup(true);
       return;
     }
 
     if (!product.stock || product.stock <= 0) {
-      toast.error("Product is out of stock!");
+      toast.error("Produk habis!");
+      return;
+    }
+
+    const currentType = product.types?.find(
+      (type) => product.prices?.[type] === selectedPrice
+    );
+
+    if (
+      product.types?.length > 0 &&
+      !currentType &&
+      selectedPrice === product.price
+    ) {
+      toast.error("Harap pilih tipe terlebih dahulu untuk membeli");
       return;
     }
 

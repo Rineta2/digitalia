@@ -1494,5 +1494,104 @@
                 }
             }
         }
+
+        //================== Transaction ==================//
+
+        .transaction {
+            margin-top: 10rem;
+
+            .transaction__container {
+                max-width: 1440px;
+                margin: 0 auto;
+
+                .transaction-title {
+                    font-size: 24px;
+                    font-weight: bold;
+                    margin-bottom: 20px;
+                }
+
+                .transaction-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                    gap: 1.5rem;
+                    padding: 1rem;
+
+                    .transaction-card {
+                        background: white;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                        overflow: hidden;
+
+                        &__header {
+                            padding: 1rem;
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            border-bottom: 1px solid #eee;
+                        }
+
+                        &__content {
+                            padding: 1rem;
+                        }
+
+                        .product-section {
+                            display: flex;
+                            gap: 1rem;
+                            margin-bottom: 1rem;
+
+                            .image-container {
+                                width: 80px;
+                                height: 80px;
+
+                                img {
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    border-radius: 4px;
+                                }
+                            }
+                        }
+
+                        .customer-section,
+                        .payment-section {
+                            margin-bottom: 1rem;
+                            padding-top: 0.5rem;
+                            border-top: 1px solid #eee;
+
+                            h4 {
+                                margin-bottom: 0.5rem;
+                                color: #666;
+                            }
+                        }
+
+                        .date-section {
+                            font-size: 0.875rem;
+                            color: #666;
+                            text-align: right;
+                        }
+
+                        .status-badge {
+                            padding: 0.25rem 0.75rem;
+                            border-radius: 999px;
+                            font-size: 0.875rem;
+                            font-weight: 500;
+
+                            &.pending {
+                                background: #fff3cd;
+                                color: #856404;
+                            }
+                            &.success {
+                                background: #d4edda;
+                                color: #155724;
+                            }
+                            &.failed {
+                                background: #f8d7da;
+                                color: #721c24;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

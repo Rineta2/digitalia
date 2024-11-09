@@ -7,6 +7,11 @@ export default function ProductActions({
   onBuyNow,
   isAddingToCart,
 }) {
+  const isTypeSelected =
+    !types.length ||
+    selectedPrice !== product.price ||
+    types.some((type) => product.prices?.[type] === selectedPrice);
+
   return (
     <>
       {types.length > 0 && (
@@ -48,13 +53,14 @@ export default function ProductActions({
           {isAddingToCart
             ? "Adding..."
             : product.stock <= 0
-            ? "Out of Stock"
-            : "Add to Cart"}
+            ? "Habis"
+            : "Tambahkan ke Keranjang"}
         </button>
 
         <button
           onClick={onBuyNow}
           disabled={!product.stock || product.stock <= 0}
+          className="buy-now-button"
         >
           {product.stock <= 0 ? "Out of Stock" : "Beli Sekarang"}
         </button>
